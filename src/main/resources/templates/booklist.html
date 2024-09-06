@@ -3,46 +3,48 @@
 
 <head>
     <title>Book List</title>
-    <link rel="stylesheet" type="text/css" href="/styles.css">
+    <!-- Link to Bootstrap CSS -->
+    <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" />
 </head>
 
 <body>
-    <h1>Book List</h1>
+    <div class="container">
+        <h1>Book List</h1>
 
-    <!-- add a new book -->
-    <a href="/books/new" class="btn btn-primary">Add Book</a>
+        <!-- Add a new book button -->
+        <a href="/books/new" class="btn btn-success mb-3">Add Book</a>
 
-    <!-- book list -->
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Publication Year</th>
-                <th>ISBN</th>
-                <th>Price</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="book : ${books}">
-                <td th:text="${book.title}"></td>
-                <td th:text="${book.author}"></td>
-                <td th:text="${book.publicationYear}"></td>
-                <td th:text="${book.isbn}"></td>
-                <td th:text="${book.price}"></td>
-                <td>
-                    <!-- Delete  -->
-                    <a th:href="@{/books/delete/{id}(id=${book.id})}" class="btn btn-danger"
-                        onclick="return confirm('Are you sure you want to delete this book?');">Delete</a>
+        <!-- Book list table -->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Publication Year</th>
+                    <th>ISBN</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="book : ${books}">
+                    <td th:text="${book.title}"></td>
+                    <td th:text="${book.author}"></td>
+                    <td th:text="${book.publicationYear}"></td>
+                    <td th:text="${book.isbn}"></td>
+                    <td th:text="${book.price}"></td>
+                    <td>
+                        <!-- Delete button + Bootstrap styling -->
+                        <a th:href="@{/books/delete/{id}(id=${book.id})}" class="btn btn-danger"
+                            onclick="return confirm('Are you sure you want to delete this book?');">Delete</a>
 
-                    <!-- Edit  -->
-                    <a th:href="@{/books/edit/{id}(id=${book.id})}" class="btn btn-secondary">Edit</a>
-                </td>
-
-            </tr>
-        </tbody>
-    </table>
+                        <!-- Edit button -->
+                        <a th:href="@{/books/edit/{id}(id=${book.id})}" class="btn btn-secondary">Edit</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </body>
 
 </html>
