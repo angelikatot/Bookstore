@@ -2,23 +2,17 @@ package angie.projekti.bookstore.web;
 
 import angie.projekti.bookstore.model.Book;
 import angie.projekti.bookstore.model.BookRepository;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/books")
 public class BookController {
 
     private static final Logger log = LoggerFactory.getLogger(BookController.class);
-
     private final BookRepository bookRepository;
 
     public BookController(BookRepository bookRepository) {
@@ -49,8 +43,21 @@ public class BookController {
     @GetMapping("/edit/{id}")
     public String editBook(@PathVariable("id") Long id, Model model) {
         log.info("Editing book with ID: " + id);
-        model.addAttribute("book", bookRepository.findById(id).orElse(null));
-        return "editBook";
+        Book book = bookRepository.findById(id).orElse(null);
+        if (book != null) {
+            model.addAttribute("book", book);
+            return "editBook";
+        } else {
+            log.warn("Book with ID: " + id + " not found");
+            return "redirect:/books";
+        }
+    }
+
+    @PostMapping("/update")
+    public String updateBook(@ModelAttribute("book") Book book) {
+        log.info("Updating book with ID: " + book.getId());
+        bookRepository.save(book);
+        return "redirect:/books";
     }
 
     @GetMapping("/delete/{id}")
