@@ -2,6 +2,7 @@ package angie.projekti.bookstore.web;
 
 import angie.projekti.bookstore.model.Book;
 import angie.projekti.bookstore.model.BookRepository;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -28,34 +29,34 @@ public class BookController {
     public String showBooks(Model model) {
         log.info("Fetching all books");
         model.addAttribute("books", bookRepository.findAll());
-        return "bookList"; // Thymeleaf template name for displaying books
+        return "bookList";
     }
 
     @GetMapping("/new")
     public String addBook(Model model) {
         log.info("Creating a new book");
         model.addAttribute("book", new Book());
-        return "newBook"; // Thymeleaf template name for creating a new book
+        return "addbook";
     }
 
     @PostMapping("/save")
     public String saveBook(@ModelAttribute("book") Book book) {
         log.info("Saving book: " + book);
         bookRepository.save(book);
-        return "redirect:/books"; // Redirect to the list of books
+        return "redirect:/books";
     }
 
     @GetMapping("/edit/{id}")
     public String editBook(@PathVariable("id") Long id, Model model) {
         log.info("Editing book with ID: " + id);
         model.addAttribute("book", bookRepository.findById(id).orElse(null));
-        return "editBook"; // Thymeleaf template name for editing a book
+        return "editBook";
     }
 
     @GetMapping("/delete/{id}")
     public String deleteBook(@PathVariable("id") Long id) {
         log.info("Deleting book with ID: " + id);
         bookRepository.deleteById(id);
-        return "redirect:/books"; // Redirect to the list of books
+        return "redirect:/books";
     }
 }
