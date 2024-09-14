@@ -23,6 +23,14 @@
         <label for="price">Price:</label>
         <input type="text" id="price" th:field="*{price}" /><br />
 
+        <!-- Category dropdown -->
+        <label for="category">Category:</label>
+        <select id="category" th:field="*{category}">
+            <option th:each="category : ${categories}" th:value="${category}" th:text="${category.name}">Category
+            </option>
+        </select>
+        <br />
+
         <button type="submit">Save</button>
     </form>
     <a href="#" th:href="@{/books}">Back to Book List</a>

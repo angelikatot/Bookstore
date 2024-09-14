@@ -1,9 +1,6 @@
 package angie.projekti.bookstore.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Book {
@@ -17,21 +14,25 @@ public class Book {
     private String isbn;
     private double price;
 
-    // Default constructor
+    // Many-to-One: Category
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
     public Book() {
         // No-args constructor
     }
 
-    // Parameterized constructor
-    public Book(String title, String author, int publicationYear, String isbn, double price) {
+    public Book(String title, String author, int publicationYear, String isbn, double price, Category category) {
         this.title = title;
         this.author = author;
         this.publicationYear = publicationYear;
         this.isbn = isbn;
         this.price = price;
+        this.category = category;
     }
 
-    // Getters and Setters
+    // get set
     public Long getId() {
         return id;
     }
@@ -80,6 +81,14 @@ public class Book {
         this.price = price;
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
     @Override
     public String toString() {
         return "Book{" +
@@ -89,6 +98,7 @@ public class Book {
                 ", publicationYear=" + publicationYear +
                 ", isbn='" + isbn + '\'' +
                 ", price=" + price +
+                ", category=" + (category != null ? category.getName() : "No Category") +
                 '}';
     }
 }

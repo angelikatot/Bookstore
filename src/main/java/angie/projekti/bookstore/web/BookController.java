@@ -2,6 +2,7 @@ package angie.projekti.bookstore.web;
 
 import angie.projekti.bookstore.model.Book;
 import angie.projekti.bookstore.model.BookRepository;
+import angie.projekti.bookstore.model.CategoryRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -14,9 +15,11 @@ public class BookController {
 
     private static final Logger log = LoggerFactory.getLogger(BookController.class);
     private final BookRepository bookRepository;
+    private final CategoryRepository categoryRepository;
 
-    public BookController(BookRepository bookRepository) {
+    public BookController(BookRepository bookRepository, CategoryRepository categoryRepository) {
         this.bookRepository = bookRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @GetMapping({ "", "/index" })
@@ -30,6 +33,7 @@ public class BookController {
     public String addBook(Model model) {
         log.info("Creating a new book");
         model.addAttribute("book", new Book());
+        model.addAttribute("categories", categoryRepository.findAll());
         return "addbook";
     }
 
@@ -46,6 +50,7 @@ public class BookController {
         Book book = bookRepository.findById(id).orElse(null);
         if (book != null) {
             model.addAttribute("book", book);
+            model.addAttribute("categories", categoryRepository.findAll());
             return "editBook";
         } else {
             log.warn("Book with ID: " + id + " not found");
