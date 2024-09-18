@@ -25,9 +25,9 @@
 
         <!-- Category dropdown -->
         <label for="category">Category:</label>
-        <select id="category" th:field="*{category}">
-            <option th:each="category : ${categories}" th:value="${category}" th:text="${category.name}">Category
-            </option>
+        <select id="category" name="category.id" th:field="*{category.id}">
+            <option value="" selected="selected">Select a category</option>
+            <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
         </select>
         <br />
 

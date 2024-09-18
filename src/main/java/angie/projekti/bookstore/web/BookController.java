@@ -2,6 +2,7 @@ package angie.projekti.bookstore.web;
 
 import angie.projekti.bookstore.model.Book;
 import angie.projekti.bookstore.model.BookRepository;
+import angie.projekti.bookstore.model.Category;
 import angie.projekti.bookstore.model.CategoryRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,9 +39,20 @@ public class BookController {
     }
 
     @PostMapping("/save")
-    public String saveBook(@ModelAttribute("book") Book book) {
+    public String saveBook(@ModelAttribute("book") Book book, @RequestParam("category.id") Long categoryId) {
         log.info("Saving book: " + book);
-        bookRepository.save(book);
+
+        // Fetch the category from the repository
+        Category category = categoryRepository.findById(categoryId).orElse(null);
+        if (category != null) {
+            book.setCategory(category);
+            bookRepository.save(book);
+        } else {
+            // Handle the case where the category is not found
+            log.warn("Category with ID " + categoryId + " not found");
+            // Optionally, redirect to an error page or handle the error
+            return "redirect:/books"; // Or an error page
+        }
         return "redirect:/books";
     }
 

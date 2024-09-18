@@ -1,5 +1,6 @@
 package angie.projekti.bookstore.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
@@ -17,6 +18,7 @@ public class Book {
     // Many-to-One: Category
     @ManyToOne
     @JoinColumn(name = "category_id")
+    @JsonIgnoreProperties("books") // Ignoring the 'books' field in Category when serializing
     private Category category;
 
     public Book() {
@@ -32,7 +34,7 @@ public class Book {
         this.category = category;
     }
 
-    // get set
+    // Getters and Setters
     public Long getId() {
         return id;
     }
